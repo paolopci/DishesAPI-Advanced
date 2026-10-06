@@ -5,7 +5,11 @@
 GET {{baseUrl}}/dishes
 Authorization: Bearer {{token}}
 
-### Get all dishes - filter by name (requires auth) 
+### Get experimental endpoint (requires auth)
+GET {{baseUrl}}/dishes/experimental
+Authorization: Bearer {{token}}
+
+### Get all dishes - filter by name (requires auth)
 GET {{baseUrl}}/dishes?name=Mussels
 Authorization: Bearer {{token}}
 

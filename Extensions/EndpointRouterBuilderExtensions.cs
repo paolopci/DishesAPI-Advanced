@@ -1,4 +1,5 @@
-﻿using DishesAPI.EndpointHandlers;
+﻿using DishesAPI.Attribute;
+using DishesAPI.EndpointHandlers;
 
 namespace DishesAPI.Extensions
 {
@@ -36,7 +37,7 @@ namespace DishesAPI.Extensions
                 .WithSummary("Create a dish")
                 .WithDescription("Creates a new dish. Requires the admin role and country Belgium")
                 // Indica che questo endpoint può restituire un problema di validazione con codice 400
-                .ProducesValidationProblem(400); 
+                .ProducesValidationProblem(400);
 
             dishWithGuidIdEndpoints.MapPut("", DishesHandlers.UpdateDishAsync)
                 .RequireAuthorization("RequiredAdminFromBelgium")
@@ -51,6 +52,17 @@ namespace DishesAPI.Extensions
                 .WithDescription("Deletes a dish. Requires the admin role and country Belgium")
                 // Indica che questo endpoint può restituire un problema di validazione con codice 400
                 .ProducesValidationProblem(400);
+
+            //dishesEndPoints.MapGet("/experimental/1", () => { throw new NotImplementedException(); })
+            //    .WithMetadata(new ExperimentalAttribute());
+
+            dishesEndPoints.MapGet(
+                    "/experimental", DishesHandlers.GetExperimentalAsync)
+                .AllowAnonymous()  // lo rendo pubblico senza bisogno diautorizzazione
+                .WithMetadata(new ExperimentalAttribute())
+                .WithSummary("Experimental endpoint")
+                .WithDescription("Endpoint disponibile in via sperimentale.");
+
         }
 
         public static void RegisterIngredientsEndPoints(this IEndpointRouteBuilder endpointRouteBuilder)
