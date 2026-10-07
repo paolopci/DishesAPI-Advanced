@@ -16,6 +16,10 @@ Authorization: Bearer {{token}}
 ### Get a dish by id (Rendang) (requires auth)
 GET {{baseUrl}}/dishes/fd630a57-2352-4731-b25c-db9cc7601b16
 Authorization: Bearer {{token}}
+ 
+### Get a dish by id non esiste 
+GET {{baseUrl}}/dishes/17FACAAE-0391-4015-90F3-39D4A816C9A0
+Authorization: Bearer {{token}}
 
 ### Get a dish by name (AllowAnonymous — no token needed)
 GET {{baseUrl}}/dishes/Rendang
@@ -23,6 +27,7 @@ GET {{baseUrl}}/dishes/Rendang
 ### Get ingredients for a dish (Rendang) (requires auth)
 GET {{baseUrl}}/dishes/fd630a57-2352-4731-b25c-db9cc7601b16/ingredients
 Authorization: Bearer {{token}}
+
 
 ### Get a dish that doesn't exist (requires auth)
 GET {{baseUrl}}/dishes/00000000-0000-0000-0000-000000000000
@@ -45,6 +50,18 @@ Authorization: Bearer {{token}}
 {
     "name": "Rendang (Update)"
 }
+
+### Update a dish NON bloccato (requires RequireAdminFromBelgium policy)
+PUT {{baseUrl}}/dishes/584371f0-6c09-4841-8766-08df22ef1aff
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Other dish (updated)"
+}
+
+
+
 
 ### Delete a dish (Fish Masala) (requires RequireAdminFromBelgium policy)
 DELETE {{baseUrl}}/dishes/98929bd4-f099-41eb-a994-f1918b724b5a

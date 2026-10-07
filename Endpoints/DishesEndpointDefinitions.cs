@@ -11,13 +11,20 @@ namespace DishesAPI.Endpoints
             // MapGroup
             var dishesEndPoints = builder.MapGroup("/dishes")
                 .RequireAuthorization()
-                .WithTags("Dishes");
+                .WithTags("Dishes")
+                // applico il filtro per il monitoraggio delle prestazioni a livello di gruppo
+                .AddEndpointFilter<PerformanceTrakingFilter>();
+
+
             // l'autorizzazione è in cascata da dishesEndPoints
-            var dishWithGuidIdEndpoints = dishesEndPoints.MapGroup("/{dishId:guid}");
+            var dishWithGuidIdEndpoints = dishesEndPoints.MapGroup("/{dishId:guid}")
+                // filter a livello di gruppo
+                .AddEndpointFilter<LogNotFoundResponseFilter>();
 
             dishesEndPoints.MapGet("", DishesHandlers.GetDishesAsync)
                 .WithSummary("Get all dishes")
                 .WithDescription("Returns all dishes, optionally filtered by name");
+
 
             dishWithGuidIdEndpoints.MapGet("", DishesHandlers.GetDishByIdAsync)
                 .WithName("GetDishById")
@@ -25,6 +32,7 @@ namespace DishesAPI.Endpoints
                 .WithDescription("Get a  dish. Requires the Id for the dish")
                 // Indica che questo endpoint può restituire un problema di validazione con codice 400
                 .ProducesValidationProblem(400);
+               
 
             // questo endpoint non richiede l'autorizzazione perché ho messo AllowAnonymous()
             dishesEndPoints.MapGet("/{dishName}", DishesHandlers.DishByNameAsync)
@@ -47,7 +55,7 @@ namespace DishesAPI.Endpoints
                 // Indica che questo endpoint può restituire un problema di validazione con codice 400
                 .ProducesValidationProblem(400)
                 // filter
-                .AddEndpointFilter<PerformanceTrakingFilter>()
+            //    .AddEndpointFilter<PerformanceTrakingFilter>()
                 .AddEndpointFilter<DiskIsLockedFilter>();
 
             dishWithGuidIdEndpoints.MapDelete("", DishesHandlers.DeleteDishAsync)
@@ -57,7 +65,7 @@ namespace DishesAPI.Endpoints
                 // Indica che questo endpoint può restituire un problema di validazione con codice 400
                 .ProducesValidationProblem(400)
                 // filter
-                .AddEndpointFilter<PerformanceTrakingFilter>()
+             //   .AddEndpointFilter<PerformanceTrakingFilter>()
                 .AddEndpointFilter<DiskIsLockedFilter>();
 
             //dishesEndPoints.MapGet("/experimental/1", () => { throw new NotImplementedException(); })

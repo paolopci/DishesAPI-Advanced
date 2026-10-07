@@ -1,4 +1,5 @@
-﻿using DishesAPI.EndpointHandlers;
+﻿using DishesAPI.EndpointFilters;
+using DishesAPI.EndpointHandlers;
 
 namespace DishesAPI.Endpoints
 {
@@ -8,7 +9,10 @@ namespace DishesAPI.Endpoints
         {
             var ingredientsEndPoint = builder.MapGroup("dishes/{dishId:guid}/ingredients")
                 .RequireAuthorization() // l'autorizzazione 
-                .WithTags("Ingredients");
+                .WithTags("Ingredients")
+                .AddEndpointFilter<PerformanceTrakingFilter>()
+                .AddEndpointFilter<LogNotFoundResponseFilter>();
+
 
             ingredientsEndPoint.MapGet("", IngredientsHandlers.GetIngredientsAsync)
                 .WithSummary("Get all ingredients")
