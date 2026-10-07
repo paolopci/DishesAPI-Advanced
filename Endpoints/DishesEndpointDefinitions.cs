@@ -1,4 +1,5 @@
 ﻿using DishesAPI.Attribute;
+using DishesAPI.EndpointFilters;
 using DishesAPI.EndpointHandlers;
 
 namespace DishesAPI.Endpoints
@@ -44,14 +45,20 @@ namespace DishesAPI.Endpoints
                 .WithSummary("Update a dish")
                 .WithDescription("Update a dish. Requires the admin role and country Belgium")
                 // Indica che questo endpoint può restituire un problema di validazione con codice 400
-                .ProducesValidationProblem(400);
+                .ProducesValidationProblem(400)
+                // filter
+                .AddEndpointFilter<PerformanceTrakingFilter>()
+                .AddEndpointFilter<DiskIsLockedFilter>();
 
             dishWithGuidIdEndpoints.MapDelete("", DishesHandlers.DeleteDishAsync)
                 .RequireAuthorization("RequiredAdminFromBelgium")
                 .WithSummary("Delete a dish")
                 .WithDescription("Deletes a dish. Requires the admin role and country Belgium")
                 // Indica che questo endpoint può restituire un problema di validazione con codice 400
-                .ProducesValidationProblem(400);
+                .ProducesValidationProblem(400)
+                // filter
+                .AddEndpointFilter<PerformanceTrakingFilter>()
+                .AddEndpointFilter<DiskIsLockedFilter>();
 
             //dishesEndPoints.MapGet("/experimental/1", () => { throw new NotImplementedException(); })
             //    .WithMetadata(new ExperimentalAttribute());
