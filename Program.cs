@@ -41,6 +41,7 @@ builder.Services.AddOpenApi(options =>
 
 
 builder.Services.AddProblemDetails();
+// aggiungo il supporto per la validazione dei modelli
 builder.Services.AddValidation();
 
 builder.Services.AddAuthentication().AddJwtBearer();
