@@ -55,6 +55,14 @@ builder.Services.AddDbContext<DishesDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DishesDBConnectionString")));
 
+
+
+// Organizing Endpoints at Scale
+builder.Services.RegisterAllEndpoints();
+
+
+
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -62,7 +70,7 @@ if (app.Environment.IsDevelopment())
     // opeapi/v1.json
     app.MapOpenApi();
 
-    // Configure the HTTP request pipeline. lo usi in Development
+    // Configure the HTTP request pipeline. lo usi in Development al posto di swagger
     app.MapScalarApiReference();
 }
 else
@@ -71,18 +79,28 @@ else
     app.UseExceptionHandler();
 }
 
+/*
+ ho organizzato gli Endopoints in classi separate
+ che implementano IEndpointDefinition, quindi non ho più bisogno di questo codice
 
 app.UseHttpsRedirection();
 app.UseStatusCodePages();
-// autenticazione
+
+*/
+
+// autenticazione  ho commentato per evitare di creare i token in fase di sviluppo
 // app.UseAuthentication();
 //app.UseAuthorization();
+
+
+
 
 app.MapGet("/testerror", () =>
 {
     throw new NotImplementedException();
 });
 
+app.MapEndpoints();
 
 // chiamo i EndpointRouterBuilderExtensions
 app.RegisterDishesEndPoints();

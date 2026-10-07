@@ -86,6 +86,10 @@ namespace DishesAPI.EndpointHandlers
             return TypedResults.NoContent();
         }
 
+        public static Ok<string> GetExperimentalAsync()
+        {
+            return TypedResults.Ok("Experimental endpoint");
+        }
     }
 
 }
